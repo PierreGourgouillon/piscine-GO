@@ -1,4 +1,4 @@
-package student
+package tools
 
 func Atoi(s string) int {
 	res := 0
@@ -28,5 +28,3 @@ func Atoi(s string) int {
 	}
 	return res
 }
-
-//FINISH
