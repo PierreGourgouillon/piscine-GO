@@ -1,16 +1,59 @@
-package main
+package student
 
-func main() {
-	AtoiBase("125", "0123456789")
-}
+import (
+	tools "../tools"
+)
 
-func AtoiBase(s string, base string) int {
+func AtoiBase(s string, base string) int { // Genre de main
 	if verifBase(base) == false {
 		return 0
 	}
+	Number := len(base)
+	tableauBase := createTableBase(s)
+	numberFinal := calculBase(tableauBase, s, base, Number)
+
+	return numberFinal
 }
 
-func verifBase(base string) bool {
+func calculBase(tableau []rune, s, base string, tailleBase int) int { // Convertisseur de mon string en mon int
+	compteur := 0
+	nombre := 0
+
+	for i := len(tableau) - 1; i >= 0; i-- {
+
+		lettreNumber := checkNumberInBase(rune(tableau[i]), base) //marche correctement
+		nombre += lettreNumber * tools.RecursivePower(tailleBase, compteur)
+		compteur++
+	}
+
+	return nombre
+}
+
+func checkNumberInBase(lettre rune, base string) int { //Je check dans string l'index, GOOD
+	compteur := 0
+
+	for i := range base {
+		if rune(base[i]) == lettre {
+			return compteur
+		}
+		compteur++
+	}
+
+	return 100
+}
+
+func createTableBase(s string) []rune { //Je crée un tableau pour mon S, GOOD
+
+	tableauBase := make([]rune, len(s))
+
+	for i := range s {
+		tableauBase[i] = rune(s[i])
+	}
+
+	return tableauBase
+}
+
+func verifBase(base string) bool { //Je vérif si ma base est bonne, GOOD
 	var garage byte
 	var compteur int
 	var COMPTEUR int
@@ -47,4 +90,4 @@ func verifBase(base string) bool {
 	return true
 }
 
-/*********************************************A FINIR*********************************************/
+// FINI
