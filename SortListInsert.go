@@ -1,18 +1,5 @@
 package student
 
-import (
-	"fmt"
-)
-
-func PrintList(l *NodeI) {
-	it := l
-	for it != nil {
-		fmt.Print(it.Data, " -> ")
-		it = it.Next
-	}
-	fmt.Print(nil, "\n")
-}
-
 func listPushBack(l *NodeI, data int) *NodeI {
 	n := &NodeI{Data: data}
 
@@ -25,21 +12,6 @@ func listPushBack(l *NodeI, data int) *NodeI {
 	}
 	iterator.Next = n
 	return l
-}
-
-type NodeL struct {
-	Data interface{}
-	Next *NodeL
-}
-
-type NodeI struct {
-	Data int
-	Next *NodeI
-}
-
-type List struct {
-	Head *NodeL
-	Tail *NodeL
 }
 
 func SortListInsert(l *NodeI, data_ref int) *NodeI {

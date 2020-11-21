@@ -1,9 +1,5 @@
 package student
 
-import (
-	tools "../tools"
-)
-
 func AtoiBase(s string, base string) int { // Genre de main
 	if verifBase(base) == false {
 		return 0
@@ -22,7 +18,7 @@ func calculBase(tableau []rune, s, base string, tailleBase int) int { // Convert
 	for i := len(tableau) - 1; i >= 0; i-- {
 
 		lettreNumber := checkNumberInBase(rune(tableau[i]), base) //marche correctement
-		nombre += lettreNumber * tools.RecursivePower(tailleBase, compteur)
+		nombre += lettreNumber * RecursivePower(tailleBase, compteur)
 		compteur++
 	}
 

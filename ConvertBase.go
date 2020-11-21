@@ -1,14 +1,12 @@
 package student
 
 import (
-	tools "../tools"
-
 	"github.com/01-edu/z01"
 )
 
 func ConvertBase(nbr, baseFrom, baseTo string) string {
-	n := AtoiBase(nbr, baseFrom)
-	tableauByte := PrintNbrBase(n, baseTo)
+	n := AtoiBase1(nbr, baseFrom)
+	tableauByte := PrintNbrBase1(n, baseTo)
 	var NewTableau []byte
 
 	for i := len(tableauByte) - 1; i >= 0; i-- {
@@ -17,32 +15,32 @@ func ConvertBase(nbr, baseFrom, baseTo string) string {
 	return string(NewTableau)
 }
 
-func AtoiBase(s string, base string) int { // Genre de main
+func AtoiBase1(s string, base string) int { // Genre de main
 	if verifBase(base) == false {
 		return 0
 	}
 	Number := len(base)
-	tableauBase := createTableBase(s)
-	numberFinal := calculBase(tableauBase, s, base, Number)
+	tableauBase := createTableBase1(s)
+	numberFinal := calculBase1(tableauBase, s, base, Number)
 
 	return numberFinal
 }
 
-func calculBase(tableau []rune, s, base string, tailleBase int) int { // Convertisseur de mon string en mon int
+func calculBase1(tableau []rune, s, base string, tailleBase int) int { // Convertisseur de mon string en mon int
 	compteur := 0
 	nombre := 0
 
 	for i := len(tableau) - 1; i >= 0; i-- {
 
-		lettreNumber := checkNumberInBase(rune(tableau[i]), base) //marche correctement
-		nombre += lettreNumber * tools.RecursivePower(tailleBase, compteur)
+		lettreNumber := checkNumberInBase1(rune(tableau[i]), base) //marche correctement
+		nombre += lettreNumber * RecursivePower(tailleBase, compteur)
 		compteur++
 	}
 
 	return nombre
 }
 
-func checkNumberInBase(lettre rune, base string) int { //Je check dans string l'index, GOOD
+func checkNumberInBase1(lettre rune, base string) int { //Je check dans string l'index, GOOD
 	compteur := 0
 
 	for i := range base {
@@ -55,7 +53,7 @@ func checkNumberInBase(lettre rune, base string) int { //Je check dans string l'
 	return 100
 }
 
-func createTableBase(s string) []rune { //Je crée un tableau pour mon S, GOOD
+func createTableBase1(s string) []rune { //Je crée un tableau pour mon S, GOOD
 
 	tableauBase := make([]rune, len(s))
 
@@ -66,11 +64,11 @@ func createTableBase(s string) []rune { //Je crée un tableau pour mon S, GOOD
 	return tableauBase
 }
 
-func PrintNbrBase(nbr int, base string) []byte { //genre de fonction main
+func PrintNbrBase1(nbr int, base string) []byte { //genre de fonction main
 	var TABLEAU = []byte{0}
 
-	if verifBase(base) == false {
-		tools.PrintStr("NV")
+	if verifBase1(base) == false {
+		PrintStr("NV")
 		z01.PrintRune('\n')
 		return TABLEAU
 	}
@@ -104,7 +102,7 @@ func intInBase(nombre int, base string) byte {
 	return 'Z'
 }
 
-func verifBase(base string) bool { //Verification de la base
+func verifBase1(base string) bool { //Verification de la base
 	var garage byte
 	var compteur int
 	var COMPTEUR int

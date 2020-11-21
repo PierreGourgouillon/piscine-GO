@@ -1,14 +1,4 @@
-package main
-
-import (
-	"fmt"
-)
-
-func main() {
-	arg1 := 4
-	arg2 := 3
-	fmt.Println(RecursivePower(arg1, arg2))
-}
+package student
 
 func RecursivePower(nb int, power int) int {
 
