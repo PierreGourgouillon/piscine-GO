@@ -39,36 +39,58 @@ func main() {
 		return
 	}
 
-	var nombre1 int64 = Atoi(String1)
-	var nombre2 int64 = Atoi(String2)
-	if nombre1 >= 9223372036854775807 {
-		PrintStr("0")
-		return
-	} else if nombre2 <= (-9223372036854775808) {
+	var nombre1 int64
+	var checkbool bool
+	var checkbool2 bool
+	var nombre2 int64
+	var resultat int64
+	nombre1, checkbool = Atoi(String1)
+	nombre2, checkbool2 = Atoi(String2)
+
+	if checkbool == false || checkbool2 == false {
 		PrintStr("0")
 		return
 	}
 
-	var resultat int64
-
-	if signe == "+" {
-		resultat = nombre1 + nombre2
-	} else if signe == "-" {
-		resultat = nombre1 - nombre2
-	} else if signe == "*" {
-		resultat = nombre1 * nombre2
-	} else if signe == "/" {
-		if nombre2 == 0 {
-			PrintStr("No division by 0")
-			return
+	if signe == "+" || signe == "-" || signe == "*" || signe == "/" || signe == "%" {
+		switch signe {
+		case "+":
+			if nombre1 > 0 && nombre2 > 0 && nombre1+nombre2 < 0 { //OVERFLOW ADDITION
+				PrintStr("0")
+				return
+			} else if nombre1 < 0 && nombre2 < 0 && nombre1+nombre2 > 0 { //OVERFLOW ADDITION
+				PrintStr("0")
+				return
+			}
+			resultat = nombre1 + nombre2
+		case "-":
+			if nombre1 > 0 && nombre2 > 0 && (nombre1-nombre2) > nombre1 {
+				PrintStr("0")
+				return
+			}
+			resultat = nombre1 - nombre2
+		case "*":
+			if nombre1 != (nombre1*nombre2)/nombre2 && nombre2 != 0 {
+				PrintStr("0")
+				return
+			} else if nombre2 != (nombre1*nombre2)/nombre1 {
+				PrintStr("0")
+				return
+			}
+			resultat = nombre1 * nombre2
+		case "/":
+			if nombre2 == 0 {
+				PrintStr("No division by 0")
+				return
+			}
+			resultat = nombre1 / nombre2
+		case "%":
+			if nombre2 == 0 {
+				PrintStr("No modulo by 0")
+				return
+			}
+			resultat = nombre1 % nombre2
 		}
-		resultat = nombre1 / nombre2
-	} else if signe == "%" {
-		if nombre2 == 0 {
-			PrintStr("No modulo by 0")
-			return
-		}
-		resultat = nombre1 % nombre2
 	} else {
 		PrintStr("0")
 		return
@@ -84,7 +106,7 @@ func PrintStr(chaine string) {
 	z01.PrintRune('\n')
 }
 
-func Atoi(s string) int64 {
+func Atoi(s string) (int64, bool) {
 	var res int64 = 0
 
 	for i, val := range s {
@@ -106,11 +128,18 @@ func Atoi(s string) int64 {
 		if i > 0 {
 			if !(val >= '0' && val <= '9') {
 				res = 0
-				return res
+				return res, false
 			}
 		}
 	}
-	return res
+
+	if res > 0 && s[0] == '-' {
+		return 0, false
+	} else if res < 0 && s[0] >= '0' && s[0] <= '9' || s[0] == '+' {
+		return 0, false
+	}
+
+	return res, true
 }
 
 func Itoa(n int64) string {
@@ -135,4 +164,4 @@ func Itoa(n int64) string {
 	return s
 }
 
-//FINISH
+//FINI

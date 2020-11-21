@@ -1,14 +1,9 @@
-package main
+package student
 
 import (
 	tools "../tools"
 	"github.com/01-edu/z01"
 )
-
-func main() {
-	n := 4
-	PrintCombN(n)
-}
 
 func PrintCombN(n int) {
 	s := make([]rune, n)
@@ -71,4 +66,4 @@ func canPlace(s []rune, k rune) bool {
 	return true
 }
 
-/*********************************************A FINIR*********************************************/
+// FINI
