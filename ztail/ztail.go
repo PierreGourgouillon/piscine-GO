@@ -3,6 +3,8 @@ package main
 import (
 	"os"
 
+	"github.com/01-edu/z01"
+
 	"fmt"
 )
 
@@ -12,6 +14,7 @@ func main() {
 	var fichier string
 	var optionC string
 	checkFile := 0
+	NOTFILE := ""
 
 	//mettre les arguments dans les variables
 
@@ -36,7 +39,11 @@ func main() {
 		}
 
 		for k := range stockArgs {
-			if stockArgs[k] == '.' {
+
+			if stockArgs[k] != '.' {
+				notFile = true
+				NOTFILE = args[i]
+			} else if stockArgs[k] == '.' {
 				checkFile++
 				if fichier == "" {
 					_, err := os.Open(args[i])
@@ -46,17 +53,24 @@ func main() {
 						return
 					} else {
 						fichier = args[i]
-
+						notFile = false
+						break
 					}
 				}
 			}
 		}
+
 		if checkFile == 0 {
 			fmt.Printf("tail: invalid number of bytes: %q\n", stockArgs)
 			return
 		}
 	}
-	if checkFile == 1 {
+
+	if checkFile >= 1 && notFile == true {
+
+	}
+
+	if checkFile >= 1 {
 		fichierOpen, _ := os.Open(fichier)
 
 		if optionC == "-c" && nombre == 0 {
@@ -67,39 +81,148 @@ func main() {
 		if optionC == "-c" { //Avec le "-c"
 			sizeFileWithOption, _ := fichierOpen.Stat()
 
-			if sizeFileWithOption.Size() <= nombre { //Print tt le fichier
-				sizeFile, _ := fichierOpen.Stat()     //Récupère des infos sur le fichier
-				data := make([]byte, sizeFile.Size()) //sizeFile.Size() récupère la taille du fichier et crée un tableau de cette taille
-				count, _ := fichierOpen.Read(data)
-				fmt.Printf("%q\n", data[:count])
-			} else { // Print le tableau
-
-				sizeFile, _ := fichierOpen.Stat()
-				data := make([]byte, sizeFile.Size())
-				var tab []byte
-				count, _ := fichierOpen.Read(data)
-				count = count
-
-				compteur := 1
-				for i := int64(len(data) - 1); i >= 0; i-- {
-
-					if int64(compteur) <= nombre {
-						tab = append(tab, data[i])
+			if checkFile >= 1 && notFile == true {
+				if sizeFileWithOption.Size() <= nombre {
+					sizeFile, _ := fichierOpen.Stat()
+					data := make([]byte, sizeFile.Size())
+					count, _ := fichierOpen.Read(data)
+					for i := 0; i < checkFile; i++ {
+						if i == checkFile-1 {
+							fmt.Printf("===> %s <===\n", fichier)
+							fmt.Printf("%s", data[:count])
+							fmt.Printf("tail: cannot open '%s' for reading: No such file or directory\n", NOTFILE)
+							return
+						}
+						fmt.Printf("===> %s <===\n", fichier)
+						fmt.Printf("%s\n", data[:count])
 					}
-					compteur++
-				}
+				} else {
 
-				for j := len(tab) - 1; j >= 0; j-- {
-					fmt.Printf(string(tab[j]))
+					sizeFile, _ := fichierOpen.Stat()
+					data := make([]byte, sizeFile.Size())
+					var tab []byte
+					count, _ := fichierOpen.Read(data)
+					count = count
+
+					compteur := 1
+					for i := int64(len(data) - 1); i >= 0; i-- {
+
+						if int64(compteur) <= nombre {
+							tab = append(tab, data[i])
+						}
+						compteur++
+					}
+					for i := 0; i < checkFile; i++ {
+						if i == checkFile-1 {
+							fmt.Printf("===> %s <===\n", fichier)
+							for j := len(tab) - 1; j >= 0; j-- {
+								fmt.Printf(string(tab[j]))
+							}
+							fmt.Printf("tail: cannot open '%s' for reading: No such file or directory\n", NOTFILE) //je suis ici
+							return
+						}
+						fmt.Printf("===> %s <===\n", fichier)
+						for j := len(tab) - 1; j >= 0; j-- {
+							fmt.Printf(string(tab[j]))
+						}
+						z01.PrintRune('\n')
+					}
+
+				}
+			}
+
+			if sizeFileWithOption.Size() <= nombre { //Print tt le fichier
+
+				if checkFile == 1 {
+					sizeFile, _ := fichierOpen.Stat()     //Récupère des infos sur le fichier
+					data := make([]byte, sizeFile.Size()) //sizeFile.Size() récupère la taille du fichier et crée un tableau de cette taille
+					count, _ := fichierOpen.Read(data)
+					fmt.Printf("%s\n", data[:count])
+				} else {
+					sizeFile, _ := fichierOpen.Stat()
+					data := make([]byte, sizeFile.Size())
+					count, _ := fichierOpen.Read(data)
+					for i := 0; i < checkFile; i++ {
+						if i == checkFile-1 {
+							fmt.Printf("===> %s <===\n", fichier)
+							fmt.Printf("%s", data[:count])
+							break
+						}
+						fmt.Printf("===> %s <===\n", fichier)
+						fmt.Printf("%s\n", data[:count])
+					}
+				}
+			} else { // Print le tableau
+				if checkFile == 1 {
+					sizeFile, _ := fichierOpen.Stat()
+					data := make([]byte, sizeFile.Size())
+					var tab []byte
+					count, _ := fichierOpen.Read(data)
+					count = count
+
+					compteur := 1
+					for i := int64(len(data) - 1); i >= 0; i-- {
+
+						if int64(compteur) <= nombre {
+							tab = append(tab, data[i])
+						}
+						compteur++
+					}
+					for j := len(tab) - 1; j >= 0; j-- {
+						fmt.Printf(string(tab[j]))
+					}
+				} else {
+					sizeFile, _ := fichierOpen.Stat()
+					data := make([]byte, sizeFile.Size())
+					var tab []byte
+					count, _ := fichierOpen.Read(data)
+					count = count
+
+					compteur := 1
+					for i := int64(len(data) - 1); i >= 0; i-- {
+
+						if int64(compteur) <= nombre {
+							tab = append(tab, data[i])
+						}
+						compteur++
+					}
+					for i := 0; i < checkFile; i++ {
+						if i == checkFile-1 {
+							fmt.Printf("===> %s <===\n", fichier)
+							for j := len(tab) - 1; j >= 0; j-- {
+								fmt.Printf(string(tab[j]))
+							}
+							break
+						}
+						fmt.Printf("===> %s <===\n", fichier)
+						for j := len(tab) - 1; j >= 0; j-- {
+							fmt.Printf(string(tab[j]))
+						}
+						z01.PrintRune('\n')
+					}
 				}
 			}
 
 		} else { //Sans le "-c"  Print tous le fichier, GOOD
-
-			sizeFile, _ := fichierOpen.Stat()     //Récupère des infos sur le fichier
-			data := make([]byte, sizeFile.Size()) //sizeFile.Size() récupère la taille du fichier et crée un tableau de cette taille
-			count, _ := fichierOpen.Read(data)
-			fmt.Printf("%q\n", data[:count])
+			if checkFile == 1 {
+				sizeFile, _ := fichierOpen.Stat()     //Récupère des infos sur le fichier
+				data := make([]byte, sizeFile.Size()) //sizeFile.Size() récupère la taille du fichier et crée un tableau de cette taille
+				count, _ := fichierOpen.Read(data)
+				fmt.Printf("%s\n", data[:count])
+			} else {
+				sizeFile, _ := fichierOpen.Stat()     //Récupère des infos sur le fichier
+				data := make([]byte, sizeFile.Size()) //sizeFile.Size() récupère la taille du fichier et crée un tableau de cette taille
+				count, _ := fichierOpen.Read(data)
+				for i := 0; i < checkFile; i++ {
+					if i == checkFile-1 {
+						fmt.Printf("===> %s <===\n", fichier)
+						fmt.Printf("%s", data[:count])
+						break
+					}
+					fmt.Printf("===> %s <===\n", fichier)
+					fmt.Printf("%s\n", data[:count])
+				}
+			}
 		}
 	}
 }
@@ -107,6 +230,7 @@ func main() {
 var (
 	args       = os.Args[1:]
 	tailleArgs = len(args)
+	notFile    = true
 )
 
 func Atoi(s string) int64 {
@@ -131,30 +255,5 @@ func Atoi(s string) int64 {
 	}
 	return res
 }
-
-/*********************************************A FINIR*********************************************/
-
-//"tail: illegal offset"
-//"tail: %s: No such file or directory"
-
-/*	tail fichier.txt : Print tous le fichier, GOOD
-	tail -c 15 fichier.txt : Print les 15 derniers bytes du fichier.txt
-
-	Conditions :
-	SI le INT est plus grand que la taille entiere du fichier tu print le fichier
-	SI le nom du fichier en args est différent du nom de fichier, print erreur :tail: %s: No such file or directory (file.Name), GOOD
-	SI l'argument du nombre est autre qu'un nombre renvoyer "tail: invalid number of bytes: ‘’"
-	SI l'argument du fichier est en plusieurs fois, il faut print plusieurs fois
-
-	Commandes utiles :
-	os.OpenFile() : Ouvrir le fichier
-	file.Name() : Renvoie le nom du file
-	os.Exit() : Sortir de la sortie standard
-	os.Stdin() : Équivalent à cat. Prenez l'entrée standard et imprimez-la sur la sortie standard
-	os.Stdout() : fichier qui est immédiatement imprimé à l'écran par la console
-
-	data := make([]byte, 100)
-	count, err := file.Read(data) : lire un fichier
-*/
 
 //FINI

@@ -13,7 +13,7 @@ func BTreeTransplant(root, node, rplc *TreeNode) *TreeNode {
 	}
 
 	if node == root {
-		root.Data = rplc.Data
+		root = rplc
 	}
 	return root
 }

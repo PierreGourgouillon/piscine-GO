@@ -12,11 +12,11 @@ func printLn(chaine string) {
 	for _, r := range chaine {
 		z01.PrintRune(r)
 	}
-	z01.PrintRune('\n')
 }
 
 func fatal(chaine string) {
 	printLn(chaine)
+	z01.PrintRune('\n')
 	os.Exit(1)
 }
 
@@ -40,6 +40,7 @@ func main() {
 				fatal("ERROR: " + err.Error())
 			}
 			printLn(string((a)))
+			z01.PrintRune('\n')
 		}
 	}
 }

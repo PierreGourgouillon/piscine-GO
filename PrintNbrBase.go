@@ -5,9 +5,14 @@ import (
 )
 
 func PrintNbrBase(nbr int, base string) {
+
+	if nbr == -9223372036854775808 {
+		PrintStr("-9223372036854775808")
+		return
+	}
+
 	if verifBase1(base) == false {
 		PrintStr("NV")
-		z01.PrintRune('\n')
 		return
 	}
 	negatif := isNegative(nbr)
@@ -73,8 +78,6 @@ func printTableau(tableau []byte, negatif bool) {
 			z01.PrintRune(rune(tableau[i]))
 		}
 	}
-
-	z01.PrintRune('\n')
 }
 
 func isNegative(base int) bool {

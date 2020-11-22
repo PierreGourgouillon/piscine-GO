@@ -1,18 +1,33 @@
 package student
 
 func BTreeDeleteNode(root, node *TreeNode) *TreeNode {
-	if root != nil {
-		if root == node {
-			right := root.Right
+	if root == nil {
+		return root
+	}
+
+	if root.Data == node.Data {
+		if root.Right == nil {
 			root = root.Left
-			root.Right = right
+		} else if root.Left == nil {
+			root = root.Right
+		} else if root.Left != nil && root.Right != nil {
+			root.Data = BTreeMin(root.Right).Data
+			root.Right = BTreeDeleteNode(root.Right, BTreeMin(root.Right))
+			return root
 		}
-		if root.Left != nil {
-			root.Left = BTreeDeleteNode(root.Left, node)
-		}
-		if root.Right != nil {
-			root.Right = BTreeDeleteNode(root.Right, node)
-		}
+	} else if node.Data > root.Data {
+		root.Right = BTreeDeleteNode(root.Right, node)
+	} else if node.Data < root.Data {
+		root.Left = BTreeDeleteNode(root.Left, node)
+	}
+	return root
+}
+
+func BTreeMin(root *TreeNode) *TreeNode {
+	if root.Left != nil {
+		return BTreeMin(root.Left)
+	} else if root.Left == nil {
+		return root
 	}
 	return root
 }

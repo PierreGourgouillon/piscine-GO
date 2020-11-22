@@ -368,9 +368,10 @@ func main() {
 	student.ListPushBack(list4, 68)
 	student.ListPushBack(list4, 56)
 	student.ListPushBack(list4, 87)
-	student.ListRemoveIf(list4, 68)
+	student.ListPushBack(list4, 68)
 	student.ListPushBack(list4, 56)
-	student.ListPushBack(list3, 68)
+	student.ListPushBack(list4, 68)
+	student.ListRemoveIf(list4, 68)
 	PrintList2(list4)
 
 	list5 := &student.List{}

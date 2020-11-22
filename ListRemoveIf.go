@@ -1,6 +1,8 @@
 package student
 
-import "fmt"
+import (
+	"fmt"
+)
 
 func ListPushBack(l *List, data interface{}) { //Mettre string/int dans list
 	k := &NodeL{Next: nil, Data: data}
